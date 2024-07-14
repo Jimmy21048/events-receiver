@@ -1,0 +1,142 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* border:1px solid; */
+}
+
+:root {
+    --color1: rgb(233, 255, 181);
+}
+.app {
+    overflow: hidden;
+}
+.main-page {
+    height: 100vh;
+    width: 100vw;
+    display:flex;
+    overflow: hidden;
+    background-image: url('../images/pexels-adrien-olichon-1257089-2387793.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: black;
+}
+.main-page-left {
+    width:60vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+}
+.event-info {
+    height:50vh;
+    
+}
+.event-info h1 {
+    font-size: 6.2rem;
+    color: var(--color1);
+}
+.event-info h4 {
+    font-size: 1.5rem;
+    color: var(--color1);
+}
+.img-feedback {
+    width:60vw;
+    height:45vh;
+    display:flex;
+    align-items: end;
+    /* justify-content: space-between; */
+    /* padding: 0 20px; */
+    gap: 50px;
+}
+.img-feedback p {
+    color: var(--color1);
+    border: 1px solid var(--color1);
+    padding: 15px 35px;
+    border-radius: 10px;
+}
+.main-page-left img {
+    height:45vh;
+    width:40vw;
+}
+.main-page-right {
+    width:40vw;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: end;
+    padding:20px 5px;
+}
+.right-top {
+    height:10vh;
+    width:100%;
+    display:flex;
+    justify-content: right;
+    gap:50px;
+    padding: 10px 20px;
+}
+.right-top * {
+    color: var(--color1);
+    font-size: 1.2rem;
+
+}
+.right-bottom {
+    width:38vw;
+    height: max-content;
+    font-size: 1.7rem;
+    letter-spacing: 1px;
+    padding:10px;
+    text-align: right;
+    margin-bottom: 4vh;
+    color: white;
+    font-weight: 900;
+}
+@media screen  and (max-width: 1000px) {
+    .main-page {
+        border: 1px solid white;
+        flex-direction: column;
+        overflow-y: scroll;
+    }
+    .main-page-left {
+        width:100vw;
+    }
+    .event-info {
+        height:30vh;
+    }
+    .event-info h1 {
+        font-size: 3.2rem;
+    }
+    .event-info h4 {
+        font-size: 1.4rem;
+    }
+    .img-feedback {
+        width:95vw;
+        height: 55vh;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+    .main-page-left img {
+        height:40vh;
+        width:90vw;
+    }
+    .main-page-right {
+        width:100vw;
+        flex-direction: column-reverse;
+        align-items: center;
+        padding:10px;
+    }
+    .right-top {
+        justify-content: space-between;
+        align-items: end;
+        gap:10px;
+        padding: 10px;
+    }
+    .right-bottom {
+        width:95vw;
+        font-size: 1.4rem;
+        text-align: left;
+        font-weight: 400;
+    }
+}
