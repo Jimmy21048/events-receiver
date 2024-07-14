@@ -15,7 +15,9 @@ export default function Main() {
     }
     useEffect(() => {
         if(id) {
-            axios.post('http://localhost:3002/sent', { id }, {
+            
+            axios.post('https://birthday-site-server.onrender.com/sent', { id }, {
+            // axios.post('http://localhost:3002/sent', { id }, {
                 headers : {
                     'Content-Type': 'application/json',
                 }
