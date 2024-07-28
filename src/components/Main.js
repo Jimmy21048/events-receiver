@@ -5,7 +5,7 @@ import axios from "axios";
 import './App.css';
 import confetti from 'canvas-confetti';
 import { storage } from "./firebaseConfig";
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, getDownloadURL, child } from 'firebase/storage';
 
 export default function Main() {
     const history = useNavigate();
@@ -17,6 +17,7 @@ export default function Main() {
     const canvasRef = useRef(null);
     const [imageUrl, setImageUrl] = useState('');
     const [feedback2, setFeedback2] = useState('');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
             // confetti
@@ -27,12 +28,12 @@ export default function Main() {
     
             myConfetti({
                 particleCount: 80, 
-                spread: 60,
+                spread: 70,
                 origin: {
                     x: Math.random(),
-                    y: Math.random() - 0.2
+                    y: Math.random() + 0.2
                 },
-                startVelocity: 50, 
+                startVelocity: 40, 
                 gravity: 0.5, 
             })
     
@@ -52,6 +53,7 @@ export default function Main() {
                 }
             })
             .then(response => {
+                setLoading(false);
                 if(response.data.error ||
                 response.data.userError ||
                 response.data.validationError ||
@@ -68,14 +70,13 @@ export default function Main() {
 
     useEffect(() => {
         const fetchImage = async () => {
-            console.log(data.r_image);
-            try {
-                const storageRef = ref(storage, data.r_image);
-                const url = await getDownloadURL(storageRef);
+            const storageRef = ref(storage, `${data.r_image}`);
+            getDownloadURL(storageRef)
+            .then(url => {
                 setImageUrl(url);
-            } catch(error) {
-                console.error('Error fetching image:', error);
-            }
+            }).catch(error => {
+
+            })
         }
 
         fetchImage();
@@ -95,6 +96,9 @@ export default function Main() {
         })
     }
     
+    if(loading) {
+        return <div className="loading"><i class="fa-solid fa-circle-notch fa-spin"></i><h3>Loading...</h3></div>
+    }
     return (
         <>
             {
@@ -120,7 +124,9 @@ export default function Main() {
                             <h4>{ data.r_name }</h4>
                         </div>
                         <div className="img-feedback">
-                            <img src={imageUrl} alt="firebase" />
+                            {
+                                imageUrl ? <img src={imageUrl} alt="firebase" /> : <div className="img"> </div>
+                            }
                             <button onClick={() =>setMessage(message => !message)}>Feedback</button>
                         </div>
                     </div>

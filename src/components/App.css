@@ -68,6 +68,11 @@
 .main-page-left img {
     height:45vh;
     width:40vw;
+
+}
+.main-page-left .img {
+    height: 45vh;
+    width: 40vw;
 }
 .main-page-right {
     width:40vw;
@@ -167,11 +172,31 @@
     color: white;
 }
 /* return */
+/* loading */
+.loading {
+    background-color: #e4e0e0;
+    height: 100vh;
+    width:100vw;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+.loading .fa-solid {
+    font-size: 3.5rem;
+    color: rgba(76, 230, 204, 0.938);
+}
+.loading h3 {
+    font-size: 1.5rem
+}
+
 @media screen  and (max-width: 1000px) {
     .main-page {
         border: 1px solid white;
         flex-direction: column;
         overflow-y: scroll;
+        padding-bottom: 10vh;
     }
     .main-page-left {
         width:100vw;
