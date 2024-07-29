@@ -125,7 +125,7 @@ export default function Main() {
                         </div>
                         <div className="img-feedback">
                             {
-                                imageUrl ? <img src={imageUrl} alt="firebase" /> : <div className="img"> </div>
+                                imageUrl ? <img src={imageUrl} alt="firebase" /> : <img src="../images/default-pic.jpg" alt="default-pic" />
                             }
                             <button onClick={() =>setMessage(message => !message)}>Feedback</button>
                         </div>
@@ -134,15 +134,17 @@ export default function Main() {
                         <div className="right-top">
                             <p>From { data.username }</p>
                             <p>{ data.open_date }</p>
-                            <a href="http://localhost:3000" rel="noreferrer" target="_blank">About</a>
+                            <a href="https://my-events-site.vercel.app" rel="noreferrer" target="_blank">About</a>
+                            {/* <a href="http://localhost:3000" rel="noreferrer" target="_blank">About</a> */}
                         </div>
                         <div className="right-bottom">
                         "{ data.message }"
                         </div>
                     </div>
                 </div> : 
-                <div>
-                    Ooops! You can only open this page from { data.open_date }
+                <div className="wrong-date">
+                    <p>Ooops! You can only open this page from { data.open_date }</p>
+                    <p>Sender's rules &#128513;</p>
                 </div>
             }
         </>
