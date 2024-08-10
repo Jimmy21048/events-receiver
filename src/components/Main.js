@@ -61,6 +61,7 @@ export default function Main() {
                     history('/');
                 } else if(response.data.message)  {
                     setData(response.data.message[0]);
+                    console.log(response.data);
                 }
             })
         } else {
@@ -69,20 +70,24 @@ export default function Main() {
     },[])
 
     useEffect(() => {
-        const fetchImage = async () => {
-            const storageRef = ref(storage, `${data.r_image}`);
-            getDownloadURL(storageRef)
-            .then(url => {
-                setImageUrl(url);
-            }).catch(error => {
-
-            })
+        if(data.r_image !== '') {
+            const fetchImage = async () => {
+                const storageRef = ref(storage, `${data.r_image}`);
+                getDownloadURL(storageRef)
+                .then(url => {
+                    setImageUrl(url);
+                }).catch(error => {
+    
+                })
+            }
+    
+            fetchImage();
         }
 
-        fetchImage();
     }, [data]);
 
     const handleSendResponse = () => {
+        let responseElement = document.getElementById("feedback-text");
         axios.post('https://birthday-site-server.onrender.com/sent/feedback', { userResponse, id: data.r_id }, {
         // axios.post('http://localhost:3002/sent/feedback', { userResponse, id: data.r_id }, {
             headers : {
@@ -92,12 +97,14 @@ export default function Main() {
             setFeedback2(response.data);
             if(feedback2 === "Feedback Sent") {
                 setUserResponse('');
+                console.log(responseElement.value);
+                responseElement.value = '';
             }
         })
     }
     
     if(loading) {
-        return <div className="loading"><i class="fa-solid fa-circle-notch fa-spin"></i><h3>Loading...</h3></div>
+        return <div className="loading"><i class="fa-solid fa-circle-notch fa-spin"></i><h3>Just a sec... collecting data...</h3></div>
     }
     return (
         <>
@@ -112,33 +119,31 @@ export default function Main() {
                                 <button onClick={() => setMessage(false)}>X</button>
                             </header>
 
-                            <textarea  name="feedback-text" value={userResponse} onChange={(e) => setUserResponse(e.target.value)} />
+                            <textarea id="feedback-text"  name="feedback-text" value={userResponse} onChange={(e) => setUserResponse(e.target.value)} />
                             <button className="send" onClick={handleSendResponse}>Send</button>
                             <p>{ feedback2 }</p>
                         </div> : ''
                     }
+                    <header className="main-page-header">
+                        <a href="https://my-events-site.vercel.app" target="_blank" rel="noreferrer">About</a>
+                    </header>
                     <div className="main-page-left">
                     <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />
-                    <div className="event-info">
-                            <h1>HAPPY <br/> { data.event_type }</h1>
-                            <h4>{ data.r_name }</h4>
+                            {/* <a href="https://my-events-site.vercel.app" rel="noreferrer" target="_blank">About</a> */}
+                            {/* {/* <a href="http://localhost:3000" rel="noreferrer" target="_blank">About</a> */}
+                        <div className="left-card">
+                            <h1 className="card-header">HAPPY { data.event_type.toUpperCase() }</h1>
+                            <h2 className="card-title">{ data.r_name }</h2>
+                            <div className="card-body">{ data.message }</div>
                         </div>
-                        <div className="img-feedback">
-                            {
-                                imageUrl ? <img src={imageUrl} alt="firebase" /> : <img src="../images/default-pic.jpg" alt="default-pic" />
-                            }
-                            <button onClick={() =>setMessage(message => !message)}>Feedback</button>
+                        <div className="right-card">
+                            <img src={`${imageUrl}`} alt="my event" />
                         </div>
-                    </div>
-                    <div className="main-page-right">
-                        <div className="right-top">
-                            <p>From { data.username }</p>
+                        <div className="bottom-card">
+                            <h3>From { data.username }</h3>
                             <p>{ data.open_date }</p>
-                            <a href="https://my-events-site.vercel.app" rel="noreferrer" target="_blank">About</a>
-                            {/* <a href="http://localhost:3000" rel="noreferrer" target="_blank">About</a> */}
-                        </div>
-                        <div className="right-bottom">
-                        "{ data.message }"
+                            <button className="btn-download">Download Card</button>
+                            <button className="btn-feedback" onClick={() => setMessage(!message)}>Feedback</button>
                         </div>
                     </div>
                 </div> : 
