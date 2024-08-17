@@ -152,7 +152,7 @@ export default function Main() {
                         </div>
                         <div className="right-card">
                             {
-                                imageUrl.length < 4 ? 
+                                imageUrl.length > 4 ? 
                                 <img src={`${imageUrl}`} alt="my event" /> :
                                 <img src='../images/default-pic.jpg' alt="my event" />
                             }
