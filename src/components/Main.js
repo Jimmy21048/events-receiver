@@ -9,7 +9,7 @@ import { getStorage, ref, getDownloadURL, child } from 'firebase/storage';
 
 export default function Main() {
     const history = useNavigate();
-    const {id} = useParams();
+    let {id} = useParams();
     const [data, setData] = useState([]);
     const today = new Date().getTime();
     const [message, setMessage] = useState(false);
@@ -18,6 +18,8 @@ export default function Main() {
     const [imageUrl, setImageUrl] = useState('');
     const [feedback2, setFeedback2] = useState('');
     const [loading, setLoading] = useState(true);
+    const [testLink, setTestLink] = useState(null);
+
 
     useEffect(() => {
             // confetti
@@ -42,8 +44,16 @@ export default function Main() {
               }, 5000); 
     
             // confetti
-    })
+    }, [])
     useEffect(() => {
+
+        if(id.at(-1) === 'a') {
+            setTestLink(true);
+            id = id.slice(0, -1);
+
+            alert("This is a test page, contents can be viewed before time... be sure not to send this url")
+        }
+    console.log(id.slice(0, -1))
         if(id) {
             
             axios.post('https://birthday-site-server.onrender.com/sent', { id }, {
@@ -61,7 +71,6 @@ export default function Main() {
                     history('/');
                 } else if(response.data.message)  {
                     setData(response.data.message[0]);
-                    console.log(response.data);
                 }
             })
         } else {
@@ -77,7 +86,7 @@ export default function Main() {
                 .then(url => {
                     setImageUrl(url);
                 }).catch(error => {
-    
+                    
                 })
             }
     
@@ -86,8 +95,8 @@ export default function Main() {
 
     }, [data]);
 
-    const handleSendResponse = () => {
-        let responseElement = document.getElementById("feedback-text");
+    const handleSendResponse = (e) => {
+        e.preventDefault();
         axios.post('https://birthday-site-server.onrender.com/sent/feedback', { userResponse, id: data.r_id }, {
         // axios.post('http://localhost:3002/sent/feedback', { userResponse, id: data.r_id }, {
             headers : {
@@ -95,11 +104,13 @@ export default function Main() {
             }
         }).then(response => {
             setFeedback2(response.data);
-            if(feedback2 === "Feedback Sent") {
-                setUserResponse('');
-                console.log(responseElement.value);
-                responseElement.value = '';
-            }
+
+            setTimeout(() => {
+                setFeedback2('')
+                if(response.data === "Feedback Sent") {
+                    setUserResponse('');
+                }
+            }, 5000);
         })
     }
     
@@ -109,7 +120,7 @@ export default function Main() {
     return (
         <>
             {
-                today >= new Date(data.open_date).setHours(0, 0, 0, 0) ? 
+                (today >= new Date(data.open_date).setHours(0, 0, 0, 0) || testLink)? 
                 <div className="main-page">
                     {
                         message ? 
@@ -119,30 +130,37 @@ export default function Main() {
                                 <button onClick={() => setMessage(false)}>X</button>
                             </header>
 
-                            <textarea id="feedback-text"  name="feedback-text" value={userResponse} onChange={(e) => setUserResponse(e.target.value)} />
-                            <button className="send" onClick={handleSendResponse}>Send</button>
+                            <form onSubmit={handleSendResponse}>
+                                <textarea id="feedback-text"  name="feedback-text" value={userResponse} onChange={(e) => setUserResponse(e.target.value)} />
+                                <button className="send">Send</button>
+                            </form>
+
                             <p>{ feedback2 }</p>
                         </div> : ''
                     }
                     <header className="main-page-header">
                         <a href="https://my-events-site.vercel.app" target="_blank" rel="noreferrer">About</a>
+                        {/* <a href="http://localhost:3000" target="_blank" rel="noreferrer">About</a> */}
                     </header>
                     <div className="main-page-left">
                     <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />
-                            {/* <a href="https://my-events-site.vercel.app" rel="noreferrer" target="_blank">About</a> */}
-                            {/* {/* <a href="http://localhost:3000" rel="noreferrer" target="_blank">About</a> */}
                         <div className="left-card">
                             <h1 className="card-header">HAPPY { data.event_type.toUpperCase() }</h1>
                             <h2 className="card-title">{ data.r_name }</h2>
                             <div className="card-body">{ data.message }</div>
+                            <i className="card-from">From <b>{ data.username }</b></i>
                         </div>
                         <div className="right-card">
-                            <img src={`${imageUrl}`} alt="my event" />
+                            {
+                                imageUrl.length < 4 ? 
+                                <img src={`${imageUrl}`} alt="my event" /> :
+                                <img src='../images/default-pic.jpg' alt="my event" />
+                            }
+                            
                         </div>
                         <div className="bottom-card">
                             <h3>From { data.username }</h3>
                             <p>{ data.open_date }</p>
-                            <button className="btn-download">Download Card</button>
                             <button className="btn-feedback" onClick={() => setMessage(!message)}>Feedback</button>
                         </div>
                     </div>

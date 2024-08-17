@@ -9,7 +9,7 @@
     --color1: rgb(244, 247, 246);
     --color2: rgba(223, 228, 228, 0.829);
     --color3: rgba(75, 75, 75, 0.678);
-    --color4: rgb(139, 148, 150);
+    --color4: rgb(157, 198, 207);
 }
 .app {
     /* overflow: hidden; */
@@ -92,21 +92,24 @@
 .right-card img {
     width: 350px;
     max-width: 95vw;
+    /* height: max-content; */
     max-height: inherit;
     object-fit: contain;
     border-radius: 15px;
     box-shadow: 2px 3px 5px gray;
 }
 .bottom-card {
-    height: 40vh;
-    /* width: 350px; */
-    /* max-width: 95vw; */
+    height: 30vh;
+    width: 350px;
     display: flex;
     flex-direction: column;
     gap: 20px;
     padding-left: 10px;
     justify-content: space-around;
     background-color: var(--color2);
+    margin-bottom: 10vh;
+    padding: 20px;
+    border-radius: 10px;
 }
 .bottom-card button {
     height: 6vh;
@@ -130,7 +133,7 @@
     left: 0;
     right: 0;
     top: 20vh;
-    height:50vh;
+    height:60vh;
     width:350px;
     max-width: 90vw;
     margin: 0 auto;
@@ -158,8 +161,14 @@
     background-color: black;
     color:white;
 }
+.return-feedback form {
+    height: 40vh;
+    width: 100%;
+    padding: 0 10px;
+}
 #feedback-text {
-    height: 30vh;
+    background-color: #e7e7e7;
+    height: 25vh;
     width: 90%;
     margin: 0 auto;
     padding: 2px;
@@ -167,7 +176,7 @@
 }
 .send {
     width: 120px;
-    height:8vh;
+    height:6vh;
     margin: 0 auto;
     border-radius: 5px;
     border: none;
@@ -182,4 +191,49 @@
     color: rgb(255, 238, 0);
     font-size: 1.1rem;
     letter-spacing: 1px;
+}
+.loading {
+    background-color: #e4e0e0;
+    height: 100vh;
+    width:100vw;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+.loading .fa-solid {
+    font-size: 3.5rem;
+    color: rgba(76, 230, 204, 0.938);
+}
+.loading h3 {
+    font-size: 1.5rem
+}
+.wrong-date {
+    background-color: var(--color1);
+    height: 100vh;
+    width: 100vw;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.wrong-date p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    max-width: 95vw;
+}
+@media screen and (max-width: 500px) {
+    .main-page-left {
+        align-items: center;
+    }
+    .right-card {
+        justify-content: initial;
+    }
+    .bottom-card {
+        width: 350px;
+        max-width: 95vw;
+        border-radius: 10px;
+        padding: 20px;
+    }
 }
