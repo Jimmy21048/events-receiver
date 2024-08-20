@@ -21,8 +21,8 @@ export default function Main() {
     const [testLink, setTestLink] = useState(null);
 
 
-    useEffect(() => {
-            // confetti
+    useEffect(() => {            
+        // confetti
             const myConfetti = confetti.create(canvasRef.current, {
                 resize: true,
                 useWorker: true
@@ -47,14 +47,13 @@ export default function Main() {
     }, [])
     useEffect(() => {
 
-        if(id.at(-1) === 'a') {
-            setTestLink(true);
-            id = id.slice(0, -1);
-
-            alert("This is a test page, contents can be viewed before time... be sure not to send this url")
-        }
-    console.log(id.slice(0, -1))
         if(id) {
+            if(id.at(-1) === 'a') {
+                setTestLink(true);
+                id = id.slice(0, -1);
+    
+                alert("This is a test page, contents can be viewed before time... be sure not to send this url")
+            }
             
             axios.post('https://birthday-site-server.onrender.com/sent', { id }, {
             // axios.post('http://localhost:3002/sent', { id }, {
@@ -139,6 +138,13 @@ export default function Main() {
                         </div> : ''
                     }
                     <header className="main-page-header">
+                        {
+                            data.event_type === "Birth Day" ? 
+                            <audio  controls autoPlay>
+                            <source src="../images/bd.mp3" type="audio/mpeg"></source>
+                            </audio> : ''
+                        }
+                        
                         <a href="https://my-events-site.vercel.app" target="_blank" rel="noreferrer">About</a>
                         {/* <a href="http://localhost:3000" target="_blank" rel="noreferrer">About</a> */}
                     </header>
